@@ -40,6 +40,48 @@ class TagService {
     }
   }
 
+  async saveTagsFromExcel(excelData: string[][]): Promise<void> {
+    try {
+      // Verificar se o formato dos dados do Excel está correto
+      if (excelData.length < 4 || excelData[2].length < 5) {
+        throw new Error("Formato de dados do Excel inválido");
+      }
+
+      for (const tagInfo of excelData.slice(3)) {
+        const [tag, name, status, source, price] = tagInfo;
+
+        if (
+          tag &&
+          name &&
+          status !== undefined &&
+          source &&
+          price !== undefined
+        ) {
+          // Verificar se a tag já existe no banco de dados
+          const existingTag = await this.getTagByTag(tag.toString());
+
+          if (!existingTag) {
+            const tagData = {
+              tag: tag.toString(),
+              name: name.toString(),
+              status: parseInt(status.toString(), 10),
+              source: source.toString(),
+              price: parseFloat(price.toString()),
+            };
+
+            await this.createTag(tagData);
+          } else {
+            // A tag já existe, você pode tratar isso como quiser, por exemplo, ignorar, registrar um aviso, etc.
+            console.warn(`Tag '${tag}' já existe. Ignorando.`);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Erro ao salvar as tags do Excel:", error);
+      throw error;
+    }
+  }
+
   async updateTag(tag: string, tagData: Partial<Tag>): Promise<Tag | null> {
     try {
       if (!tag) {

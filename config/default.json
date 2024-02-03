@@ -1,0 +1,9 @@
+{
+  "App": {
+    "logger": {
+      "enabled": true,
+      "level": "info"
+    },
+    "port": 3000
+  }
+}

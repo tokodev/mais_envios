@@ -5,6 +5,7 @@ import cors from "cors";
 import config from "config";
 import { apiErrorValidator } from "./middlewares/api-error-validator";
 import { BaseRoutes } from "./routes";
+import sequelize from "./database/sequelize"; // Importe o Sequelize
 
 export class SetupServer extends Server {
   private server?: http.Server;
@@ -16,6 +17,7 @@ export class SetupServer extends Server {
   public async init(): Promise<void> {
     this.setupExpress();
     this.setupErrorHandlers();
+    await this.initSequelize();
     this.routes();
   }
 
@@ -29,6 +31,20 @@ export class SetupServer extends Server {
 
   private setupErrorHandlers(): void {
     this.app.use(apiErrorValidator);
+  }
+
+  private async initSequelize(): Promise<void> {
+    try {
+      await sequelize.authenticate();
+      console.log(
+        "Connection to the database has been established successfully."
+      );
+      await sequelize.sync();
+      console.log("Database synchronized.");
+    } catch (error) {
+      console.error("Unable to connect to the database:", error);
+      throw error;
+    }
   }
 
   public getApp(): Application {

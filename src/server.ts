@@ -5,7 +5,8 @@ import cors from "cors";
 import config from "config";
 import { apiErrorValidator } from "./middlewares/api-error-validator";
 import { BaseRoutes } from "./routes";
-import sequelize from "./database/sequelize"; // Importe o Sequelize
+import sequelize from "./database/sequelize";
+import Tag from "./models/tag.model";
 
 export class SetupServer extends Server {
   private server?: http.Server;

@@ -7,6 +7,8 @@ import { apiErrorValidator } from "./middlewares/api-error-validator";
 import { BaseRoutes } from "./routes";
 import sequelize from "./database/sequelize";
 import Tag from "./models/tag.model";
+import { TagRoutes } from "./routes/tag.routes";
+import bodyParser from "body-parser";
 
 export class SetupServer extends Server {
   private server?: http.Server;
@@ -23,6 +25,8 @@ export class SetupServer extends Server {
   }
 
   private setupExpress(): void {
+    this.app.use(bodyParser.json());
+    this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(
       cors({
         origin: "*",
@@ -40,7 +44,8 @@ export class SetupServer extends Server {
       console.log(
         "Connection to the database has been established successfully."
       );
-      await sequelize.sync();
+      await sequelize.sync(); // { force: true }
+      await Tag.sync(); //{ force: true }
       console.log("Database synchronized.");
     } catch (error) {
       console.error("Unable to connect to the database:", error);
@@ -72,6 +77,7 @@ export class SetupServer extends Server {
   }
 
   public routes(): void {
-    this.app.use("/", new BaseRoutes().router);
+    this.app.use("/api", new BaseRoutes().router);
+    this.app.use("/api/tags", new TagRoutes().router);
   }
 }

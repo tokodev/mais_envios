@@ -12,14 +12,8 @@ class Tag extends Model {
 
 Tag.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
     tag: {
-      type: DataTypes.CHAR,
-      unique: true,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     name: {
@@ -31,7 +25,7 @@ Tag.init(
       allowNull: false,
     },
     source: {
-      type: DataTypes.CHAR,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     price: {
@@ -41,8 +35,9 @@ Tag.init(
   },
   {
     sequelize,
-    tableName: "tags", // opcional: nome da tabela no banco de dados
-    modelName: "Tag", // opcional: nome do modelo
+    modelName: "Tag",
+    tableName: "tags",
+    timestamps: true,
   }
 );
 

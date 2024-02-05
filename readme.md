@@ -7,8 +7,8 @@ Esta é uma API simples para gerenciamento de tags. Permite a criação, leitura
 1. **Clone o repositório:**
 
    ```bash
-   git clone https://github.com/tokodev/mais_envio_teste.git
-   cd mais_envio_teste
+   git clone https://github.com/tokodev/mais_envios
+   cd mais_envios
    ```
 
 2. **Instale as dependências:**

@@ -69,7 +69,7 @@ export class SetupServer extends Server {
         "Connection to the database has been established successfully."
       );
       await sequelize.sync(); // { force: true }
-      await Tag.sync({ force: true }); //{ force: true }
+      await Tag.sync(); //{ force: true }
       console.log("Database synchronized.");
     } catch (error) {
       console.error("Unable to connect to the database:", error);
